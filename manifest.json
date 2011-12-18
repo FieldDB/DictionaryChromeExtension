@@ -1,5 +1,5 @@
 {
-  "name": "My First Extension",
+  "name": "Glossy Chrome",
   "version": "1.0",
 	"background_page": "background.html",
   "description": "The first extension that I made.",
@@ -14,3 +14,4 @@
     "tabs","http://fi.wikipedia.org/wiki/Suomen_kieli"
   ]
 }
+ 
