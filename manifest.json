@@ -7,7 +7,7 @@
     {
       "matches": ["http://fi.wikipedia.org/wiki/Suomen_kieli"],
       "css": ["glossy_chrome.css"],
-      "js": ["jquery.js", "glossy_chrome.js"]
+      "js": ["jquery.js", "jquery.highlight-3.js", "glossy_chrome.js"]
     }
   ],
   "permissions": [
