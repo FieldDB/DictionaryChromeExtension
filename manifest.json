@@ -1,12 +1,16 @@
 {
   "name": "My First Extension",
   "version": "1.0",
+	"background_page": "background.html",
   "description": "The first extension that I made.",
-  "browser_action": {
-    "default_icon": "icon.png",
- "popup": "popup.html"
-  },
+  "content_scripts": [
+    {
+      "matches": ["http://fi.wikipedia.org/wiki/Suomen_kieli"],
+      "css": ["glossy_chrome.css"],
+      "js": ["jquery.js", "glossy_chrome.js"]
+    }
+  ],
   "permissions": [
-    "http://api.flickr.com/"
+    "tabs","http://fi.wikipedia.org/wiki/Suomen_kieli"
   ]
 }
