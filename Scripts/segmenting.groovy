@@ -9,7 +9,7 @@ InputStreamReader sourcefile = new InputStreamReader(new FileInputStream(inputPa
 
 numberToStopTheLoopToShowOnlyPartOfIt = 0
 def flagStop = 0
-
+def fmorphemes = [:]
 
 
 while ( flagStop !=1 && (line = sourcefile.readLine() ) != -1){ 
@@ -21,7 +21,36 @@ while ( flagStop !=1 && (line = sourcefile.readLine() ) != -1){
        println "Flagging stop"
        flagStop = 1        
     }
+    
+
+   /* 
+   First if is to ensure code is working, second if runs code if code is working.
+   */
    if (line.length() > 1){
-       println line
+   
+       def fields = line.split(",")
+       def ftokens = fields[0].split(" ")   
+       ftokens.each{ token -> 
+          // println token
+       
+           def morphemes = token.split("-")
+           morphemes.each{ morpheme ->
+               fmorphemes[morpheme]="unknown"
+           
+           }
+       }
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
     }
 }
+
+println fmorphemes
