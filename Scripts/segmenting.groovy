@@ -38,12 +38,13 @@ while ( flagStop !=1 && (line = sourcefile.readLine() ) != -1){
                fmorphemes[morpheme]="unknown"
            
            }
+        
        }
    
+       def fgloss = fields[1].split("-")
    
    
-   
-   
+       println fgloss
    
    
    
@@ -53,4 +54,4 @@ while ( flagStop !=1 && (line = sourcefile.readLine() ) != -1){
     }
 }
 
-println fmorphemes
+//println fmorphemes
