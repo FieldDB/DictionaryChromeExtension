@@ -118,6 +118,17 @@ function glossyChromGetGloss(segmentedText){
     if (fSuffixes.indexOf(morphemes[i]) !== -1){
       var span = document.createElement("span");
       span.appendChild(document.createTextNode(morphemes[i]));
+
+     newlink = document.createElement('a'); 
+     //newlink.setAttribute('class', 'signature'); 
+     newlink.setAttribute('href', 'http://en.wiktionary.org/wiki/-'+morphemes[i]);
+
+
+      tn = document.createTextNode(morphemes[i]);
+      newlink.appendChild(tn);
+      span.appendChild(newlink);
+
+
       span.setAttribute('class', 'foundMorpheme');
       coloredSegmentedText.appendChild(span);
     }else{
