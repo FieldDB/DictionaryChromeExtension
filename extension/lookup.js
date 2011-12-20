@@ -104,6 +104,17 @@ function initialize() {
 }
 
 /***************************************************************
+ *            Glossy Chrome Domain Logic                       *
+ ***************************************************************/
+//Looks up Glosses
+
+
+function glossyChromGetGloss(segmentedText){
+  var morphemes = segmentedText.split("-");
+  console.log(morphemes)
+}
+
+/***************************************************************
  *                        Event Handlers                       *
  ***************************************************************/
 // Handle lookup-on-click.
@@ -136,7 +147,8 @@ function handleKeypress(e) {
   console.log(e.keyIdentifier)
   if (e.keyIdentifier === "Enter"){
     console.log("user pushed enter")
-    var segmentedText = document.getElementByName("segmentedText");
+    var segmentedText = document.getElementById("segmentedText");
+    glossyChromGetGloss(segmentedText)
   }else { 
     console.log("user didn't push enter")
   }
@@ -446,7 +458,7 @@ function createHtmlFromLookup(query, dict_entry) {
     buffer.push('<div style="display: table; padding-top: 3em; width: 100%;">');
     buffer.push('<div style="display: table-cell; text-align: center; vertical-align: middle;">');
 
-    buffer.push('Add segmentation (eg. un-lock-able): <input class="segmentedTextBox" type="text" name="segmentedText" value="'+ query +'" />');
+    buffer.push('Add segmentation (eg. un-lock-able): <input class="segmentedTextBox" type="text" id="segmentedText" value="'+ query +'" />');
     if (dict_entry.suggestions) {
       // Offer suggestions.
       buffer.push('<br /><br />');     buffer.push('<em class="suggestion">');
