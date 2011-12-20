@@ -133,6 +133,14 @@ function handleClick(e) {
 
 // Handle keyboard shortcut.
 function handleKeypress(e) {
+  console.log(e.keyIdentifier)
+  if (e.keyIdentifier === "Enter"){
+    console.log("user pushed enter")
+    var segmentedText = document.getElementByName("segmentedText");
+  }else { 
+    console.log("user didn't push enter")
+  }
+	
   if (options.hideWithEscape && e.keyCode == 27) {
     removePopup(true, true);
     return;
@@ -785,5 +793,6 @@ function isClickInsideFrame(e) {
 
 /******************************************************************************/
 initialize();
+
 
 
