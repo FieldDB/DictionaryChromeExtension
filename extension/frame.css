@@ -13,7 +13,7 @@
   letter-spacing: none;
   line-height: 1.2em;
 
-  background-color: white !important;
+  background-color: white;
   color: black !important;
 
   margin: 0px;
@@ -320,3 +320,7 @@
 #chrome_ggl_dict_ext .suggestion * {
   font-style: italic !important;
 }
+
+input.segmentedTextBox{ 
+	background-color: yellow !important; 
+} 

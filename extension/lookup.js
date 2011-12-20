@@ -116,6 +116,7 @@ function handleClick(e) {
   // If the modifier is held down and we have a selection, create a pop-up.
   if (checkModifier(options.clickModifier, e)) {
     var query = getTrimmedSelection();
+	console.log("query is "+query)
     if (query != '') {
       if (is_inside_frame) {
         if (last_query) breadcrumbs.push(last_query);
@@ -243,13 +244,14 @@ function createQueryForm() {
 function createCenteredPopup(query) {
   var windowX = (window.innerWidth - (PADDING_LEFT + options.frameWidth + PADDING_RIGHT)) / 2;
   var windowY = (window.innerHeight - (PADDING_TOP + options.frameHeight + PADDING_BOTTOM)) / 2;
-
+	console.log("query is "+query)
   // Create new popup.
   createPopup(query, windowX, windowY, windowX, windowY, true);
 }
 
 // Create and fade in the dictionary popup frame and button.
 function createPopup(query, x, y, windowX, windowY, fixed) {
+console.log("query is "+query)
   // If an old frame still exists, wait until it is killed.
   var frame_ref = document.getElementById(ROOT_ID);
   if (frame_ref) {
@@ -436,12 +438,11 @@ function createHtmlFromLookup(query, dict_entry) {
     buffer.push('<div style="display: table; padding-top: 3em; width: 100%;">');
     buffer.push('<div style="display: table-cell; text-align: center; vertical-align: middle;">');
 
-    buffer.push('No definitions for <strong>' + query + '</strong>.');
+    buffer.push('Add segmentation (eg. un-lock-able): <input class="segmentedTextBox" type="text" name="segmentedText" value="'+ query +'" />');
     if (dict_entry.suggestions) {
       // Offer suggestions.
-      buffer.push('<br /><br />');
-      buffer.push('<em class="suggestion">');
-      buffer.push('Did you mean ');
+      buffer.push('<br /><br />');     buffer.push('<em class="suggestion">');
+      buffer.push('Suggestions go here: ');
       for (var i = 0; i < dict_entry.suggestions.length; i++) {
         var extern_link = EXTERN_LINK_TEMPLATE.replace('%query%', dict_entry.suggestions[i]);
         buffer.push('<a href="' + extern_link + '">' + dict_entry.suggestions[i] + '</a>');
@@ -784,3 +785,5 @@ function isClickInsideFrame(e) {
 
 /******************************************************************************/
 initialize();
+
+
