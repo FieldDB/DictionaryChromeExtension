@@ -1,0 +1,332 @@
+#chrome_ggl_dict_ext, #chrome_ggl_dict_ext_form, #chrome_ggl_dict_ext *, #chrome_ggl_dict_ext_form * {
+  font-size: normal;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+
+  text-align: left;
+  text-indent: none;
+  text-transform: none;
+  text-decoration: none;
+  white-space: none;
+  word-spacing: none;
+  letter-spacing: none;
+  line-height: 1.2em;
+
+  background-color: white;
+  color: black ;
+
+  margin: 0px;
+  padding: 0px;
+  border: 0px;
+  outline: none;
+
+  position: relative;
+  display: block;
+  overflow: show;
+  float: none;
+  clear: none;
+  opacity: 1;
+  visibility: visible;
+  list-style: none;
+
+  -webkit-box-shadow: none;
+}
+
+#chrome_ggl_dict_ext img {
+  height: auto;
+  width: auto;
+}
+
+#chrome_ggl_dict_ext {
+  background: white !important;
+
+  margin: 0px;
+  padding-left: 10px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  padding-right: 0px;
+
+  font-family: Arial, Tahoma, sans-serif;
+  font-size: 14px;
+
+  border: 2px #AAAAAA solid;
+  border-radius: 20px;
+
+  opacity: 0;
+
+  -webkit-box-shadow: rgba(0, 0, 0, 0.6) 0px 0px 18px;
+  -webkit-transition: opacity 0.35s linear;
+}
+
+#chrome_ggl_dict_ext span, #chrome_ggl_dict_ext img, #chrome_ggl_dict_ext a, #chrome_ggl_dict_ext em, #chrome_ggl_dict_ext strong {
+  display: inline;
+}
+
+#chrome_ggl_dict_ext span, #chrome_ggl_dict_ext div {
+  margin: 0px;
+  padding: 0px;
+}
+
+#chrome_ggl_dict_ext a {
+  color: blue !important;
+  text-decoration: underline;
+}
+
+#chrome_ggl_dict_ext ol, #chrome_ggl_dict_ext ul {
+  display: list;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+#chrome_ggl_dict_ext li {
+  display: list-item;
+  margin-bottom: 0.75em;
+  margin-top: 0em;
+}
+
+#chrome_ggl_dict_ext ul, #chrome_ggl_dict_ext ol {
+  margin-top: 1em;
+  padding-left: 2.5em;
+}
+
+#chrome_ggl_dict_ext ul ul, #chrome_ggl_dict_ext ol ul, #chrome_ggl_dict_ext ul ol, #chrome_ggl_dict_ext ol ol {
+  margin-top: 1em;
+  padding-left: 1.5em;
+}
+
+#chrome_ggl_dict_ext ul>li {
+  list-style: circle;
+}
+
+#chrome_ggl_dict_ext ol>li {
+  list-style: decimal;
+}
+
+#chrome_ggl_dict_ext strong {
+  font-weight: bold;
+}
+
+#chrome_ggl_dict_ext em {
+  font-style: italic;
+}
+
+#chrome_ggl_dict_ext p {
+  margin-left: 10px;
+  margin-top: 10px;
+}
+
+#chrome_ggl_dict_ext_handle, #chrome_ggl_dict_ext_back {
+  display: block;
+  position: absolute;
+  bottom: 0px;
+  width: 15px;
+  height: 15px;
+  z-index: 65003;  /* Sync with BASE_Z_INDEX+3 in lookup.js. */
+}
+
+#chrome_ggl_dict_ext_handle {
+  right: 0px;
+  cursor: se-resize;
+}
+
+#chrome_ggl_dict_ext_back {
+  left: 0px;
+  cursor: pointer;
+}
+
+#chrome_ggl_dict_ext_form {
+  background: white !important;
+
+  padding: 10px;
+
+  border-radius: 14px;
+
+  font-family: Arial, Tahoma, sans-serif;
+  font-size: 14px;
+
+  opacity: 0;
+
+  -webkit-box-shadow: rgba(0, 0, 0, 0.6) 0px 0px 18px;
+  -webkit-transition: opacity 0.35s linear;
+}
+
+#chrome_ggl_dict_ext_shader {
+  opacity: 0;
+  -webkit-transition: opacity 0.35s linear;
+}
+
+#chrome_ggl_dict_ext_content {
+  overflow-x: hidden;
+  overflow-y: scroll;
+  height: inherit;
+  width: auto;
+  padding-right: 10px !important;
+}
+
+#chrome_ggl_dict_ext_spacer {
+  height: 20px;
+}
+
+#chrome_ggl_dict_ext .chrome_ggl_dict_ext_title {
+  font-weight: bold;
+  font-size: 125%;
+  text-decoration: none;
+  color: black !important;
+}
+
+#chrome_ggl_dict_ext .chrome_ggl_dict_ext_phonetic {
+  margin-left: 1em;
+  white-space: nowrap;
+}
+
+#chrome_ggl_dict_ext .chrome_ggl_dict_ext_audio {
+  margin-left: 1em;
+}
+
+#chrome_ggl_dict_ext .chrome_ggl_dict_ext_audio img {
+  margin-left: 0.5em;
+}
+
+#chrome_ggl_dict_ext .chrome_ggl_dict_ext_speaker {
+  vertical-align: bottom;
+  cursor: pointer;
+}
+
+#chrome_ggl_dict_ext .chrome_ggl_dict_ext_speaker:hover {
+  opacity: 0.7;
+}
+
+#chrome_ggl_dict_ext .chrome_ggl_dict_ext_subtitle {
+  font-weight: bold;
+  padding-top: 10px;
+}
+
+#chrome_ggl_dict_ext .chrome_ggl_dict_ext_separator {
+  margin: 20px auto 10px auto;
+  height: 0px;
+  width: 100%;
+  border: none;
+  border-top: 1px solid #AAA;
+  opacity: 0.75;
+}
+
+#chrome_ggl_dict_ext .chrome_ggl_dict_ext_examples {
+  margin-top: 0.5em;
+  margin-bottom: 0em;
+}
+
+#chrome_ggl_dict_ext .chrome_ggl_dict_ext_examples li {
+  margin-bottom: 0.5em;
+  margin-top: 0em;
+}
+
+#chrome_ggl_dict_ext .chrome_ggl_dict_ext_headword {
+  font-weight: bold;
+}
+
+#chrome_ggl_dict_ext_form * {
+  font-family: Arial, Tahoma, sans-serif;
+  font-size: 1.15em;
+}
+
+#chrome_ggl_dict_ext_form input[type=text] {
+  margin-left: 7px;
+  border: 1px #AAAAAA solid;
+  padding: 3px 2px 2px 2px;
+  display: inline;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(white), to(#CCCCCC)) !important;
+}
+
+#chrome_ggl_dict_ext_form input[type=button] {
+  float: right;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#BBBBBB), to(gray)) !important;
+  color: white !important;
+  border-radius: 2px 15px 15px 2px;
+  text-shadow: rgba(0, 0, 0, 0.4) 0px -1px 1px;
+  font-weight: bold;
+  padding: 2px 3px 3px 2px;
+  display: inline;
+  cursor: pointer;
+}
+
+#chrome_ggl_dict_ext_form input[type=button]:hover {
+  background-image: -webkit-gradient(linear, left top, left bottom, from(gray), to(#BBBBBB)) !important;
+  padding: 3px 2px 2px 3px;
+}
+
+#chrome_ggl_dict_ext_shader_top, #chrome_ggl_dict_ext_shader_bottom {
+  position: absolute;
+  width: 100%;
+  left: 0px;
+  z-index: 65002;  /* Sync with BASE_Z_INDEX+2 in lookup.js. */
+}
+
+#chrome_ggl_dict_ext_shader_top {
+  top: 15px;  /* Same as #chrome_ggl_dict_ext.padding-top. */
+  height: 8px;
+}
+
+#chrome_ggl_dict_ext_shader_bottom {
+  bottom: 10px;  /* Same as #chrome_ggl_dict_ext.padding-bottom. */
+  height: 10px;
+}
+
+#chrome_ggl_dict_ext_dragger {
+  background: -webkit-gradient(linear, center top, center bottom, from(#ddd), to(#f8f8f8)) !important;
+  width: 100% !important;
+  position: absolute !important;
+  top: 0px !important;
+  left: 0px !important;
+  cursor: move !important;
+  border-radius: 20px 20px 0 0 !important; /* Sync with #chrome_ggl_dict_ext.border-radius */
+  z-index: 65006 !important;  /* Sync with BASE_Z_INDEX+6 in lookup.js. */
+}
+
+#chrome_ggl_dict_ext .label {
+  color: #666666 !important;
+  font-size: 0.85em;
+}
+
+#chrome_ggl_dict_ext .label:before {
+  content: '(';
+}
+
+#chrome_ggl_dict_ext .label:after {
+  content: ')';
+}
+
+#chrome_ggl_dict_ext .chrome_ggl_dict_ext_pos {
+  border-left: 1px #BBBBBB dotted;
+  padding-left: 0.5em !important;
+  margin-left: 0.5em !important;
+  color: #666666 !important;
+  font-size: 0.85em;
+  white-space: nowrap;
+  display: inline-block;
+  text-transform: lowercase;
+}
+
+#chrome_ggl_dict_ext .alternate_source {
+  text-decoration: none;
+  color: #666 !important;
+}
+
+#chrome_ggl_dict_ext .alternate_source:hover {
+  text-decoration: underline;
+  color: #555 !important;
+}
+
+#chrome_ggl_dict_ext .suggestion * {
+  font-style: italic !important;
+}
+
+input.segmentedTextBox{ 
+	background-color: yellow !important; 
+} 
+.foundMorpheme{
+	color:#FF0000 !important;
+}
+.unknownMorpheme{
+	color:#00FF00 !important;
+}

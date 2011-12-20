@@ -1,17 +1,20 @@
 {
   "name": "Glossy Chrome",
-  "version": "1.0",
-	"background_page": "background.html",
-  "description": "The first extension that I made.",
-  "content_scripts": [
-    {
-      "matches": ["http://fi.wikipedia.org/wiki/Suomen_kieli"],
-      "css": ["glossy_chrome.css"],
-      "js": ["jquery.js", "jquery.highlight-3.js", "glossy_chrome.js"]
-    }
-  ],
+  "version": "4.3.1",
+  "description": "Let user segment any word in an inline frame with a simple click and without leaving the page and then attempt to autogloss.",
+  "icons": { "128": "img/icon.png" },
+  "options_page": "options.htm",
+  "background_page": "background.htm",
+  "content_scripts": [{
+    "matches": [ "http://*/*", "https://*/*" ],
+    "css": [ "frame.css" ],
+    "js": [ "lookup.js" ],
+    "run_at": "document_end",
+    "all_frames": true
+  }],
   "permissions": [
-    "tabs","http://fi.wikipedia.org/wiki/Suomen_kieli"
+    "tabs",
+    "http://dictionary-lookup.org/",
+    "http://commons.wikimedia.org/"
   ]
 }
- 
