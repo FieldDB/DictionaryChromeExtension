@@ -111,7 +111,23 @@ function initialize() {
 
 function glossyChromGetGloss(segmentedText){
   var morphemes = segmentedText.split("-");
-  console.log(morphemes)
+  console.log(morphemes);
+  var coloredSegmentedText = document.createElement("p");
+  var fSuffixes=["grafia","himoinen","neen","nenäinen","nne","peräinen","staa","typia","da","dä","e","filia","fobia","geeni","geneesi","grafi","htaa","htää","iitti","in","inen","io","is","isa","ismi","isti","isä","ittain","iö","ja","jä","kas","ke","kertainen","kka","kkain","kko cont.","kkä","kkäin","kkö","kratia","la","lainen","llinen","logi","logia","loginen","lti","lä","läinen","ma","mainen","mania","maton","mattomuus","metri","minen","mpi","mä","mäinen","mätön","na","ne","nomi","nomia","nta","nti","ntä","nä","o","oida","ologi","os","pä cont.","päin","ri","s","seeni","sfääri","ska","skooppi","skopia","sti","sto","stö","syytti","ta","tar","ton","ttaa","ttain","ttäin","ttää","tä","tär","tön","u","ua","us","uu","uus","va","vä","y","ys","yys","ö","öidä","ös"];
+  for(var i =0; i<morphemes.length;i++){ 
+    if (fSuffixes.indexOf(morphemes[i]) !== -1){
+      var span = document.createElement("span");
+      span.appendChild(document.createTextNode(morphemes[i]));
+      span.setAttribute('class', 'foundMorpheme');
+      coloredSegmentedText.appendChild(span);
+    }else{
+      var span = document.createElement("span");
+      span.appendChild(document.createTextNode(morphemes[i]));
+      span.setAttribute('class', 'unknownMorpheme');
+      coloredSegmentedText.appendChild(span);
+    }
+  }
+  return coloredSegmentedText; 
 }
 
 /***************************************************************
@@ -147,9 +163,12 @@ function handleKeypress(e) {
   console.log(e.keyIdentifier)
   if (e.keyIdentifier === "Enter"){
     console.log("user pushed enter")
-    var segmentedText = document.getElementById("segmentedText");
-    glossyChromGetGloss(segmentedText)
-  }else { 
+    var segmentedText = document.getElementById("segmentedText").value;//.getAttribute("value");
+    var coloredSegments = glossyChromGetGloss(segmentedText);
+    console.log(coloredSegments);
+    document.getElementById("gloss").appendChild(coloredSegments); 
+    
+ }else { 
     console.log("user didn't push enter")
   }
 	
@@ -458,7 +477,7 @@ function createHtmlFromLookup(query, dict_entry) {
     buffer.push('<div style="display: table; padding-top: 3em; width: 100%;">');
     buffer.push('<div style="display: table-cell; text-align: center; vertical-align: middle;">');
 
-    buffer.push('Add segmentation (eg. un-lock-able): <input class="segmentedTextBox" type="text" id="segmentedText" value="'+ query +'" />');
+    buffer.push('Add segmentation (eg. un-lock-able): <input class="segmentedTextBox" type="text" id="segmentedText" value="'+ query +'" /><div id="gloss">');
     if (dict_entry.suggestions) {
       // Offer suggestions.
       buffer.push('<br /><br />');     buffer.push('<em class="suggestion">');

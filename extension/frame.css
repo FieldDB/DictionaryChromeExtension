@@ -14,7 +14,7 @@
   line-height: 1.2em;
 
   background-color: white;
-  color: black !important;
+  color: black ;
 
   margin: 0px;
   padding: 0px;
@@ -324,3 +324,9 @@
 input.segmentedTextBox{ 
 	background-color: yellow !important; 
 } 
+.foundMorpheme{
+	color:#FF0000 !important;
+}
+.unknownMorpheme{
+	color:#00FF00 !important;
+}
