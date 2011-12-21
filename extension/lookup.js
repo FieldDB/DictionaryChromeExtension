@@ -117,14 +117,14 @@ function glossyChromGetGloss(segmentedText){
   for(var i =0; i<morphemes.length;i++){ 
     if (fSuffixes.indexOf(morphemes[i]) !== -1){
       var span = document.createElement("span");
-     
+      span.appendChild(document.createTextNode(morphemes[i]));
 
      newlink = document.createElement('a'); 
      //newlink.setAttribute('class', 'signature'); 
      newlink.setAttribute('href', 'http://en.wiktionary.org/wiki/-'+morphemes[i]);
 
 
-      tn = document.createTextNode("-"+morphemes[i]);
+      tn = document.createTextNode(morphemes[i]);
       newlink.appendChild(tn);
       span.appendChild(newlink);
 
@@ -133,12 +133,7 @@ function glossyChromGetGloss(segmentedText){
       coloredSegmentedText.appendChild(span);
     }else{
       var span = document.createElement("span");
-      if(i===0){ 
-        span.appendChild(document.createTextNode(morphemes[i]));
-      }else{       
-        span.appendChild(document.createTextNode("-"+morphemes[i]));
-      }
-      
+      span.appendChild(document.createTextNode(morphemes[i]));
       span.setAttribute('class', 'unknownMorpheme');
       coloredSegmentedText.appendChild(span);
     }
@@ -513,7 +508,7 @@ function createHtmlFromLookup(query, dict_entry) {
     }
 
     // Suggest other sources.
-    buffer.push('<br /><br />');
+    /*buffer.push('<br /><br />');
     buffer.push('Try the same query in ');
     buffer.push('<a class="alternate_source" href="' + GOOGLE_DICT_LINK_TEMPLATE.replace('%query%', query) + '" target="_blank">');
     buffer.push('Google Dictionary ');
@@ -535,7 +530,7 @@ function createHtmlFromLookup(query, dict_entry) {
     buffer.push('<div class="' + ROOT_ID + '_header">');
     var extern_link = EXTERN_LINK_TEMPLATE.replace('%query%', (dict_entry.term || query));
     buffer.push('<a class="' + ROOT_ID + '_title" href="' + extern_link + '" target="_blank">' + (dict_entry.term || query) + '</a>');
-
+*/
     if (options.showIPA && dict_entry.ipa && dict_entry.ipa.length) {
       for (var i in dict_entry.ipa) {
         buffer.push('<span class="' + ROOT_ID + '_phonetic" title="Phonetic">' + dict_entry.ipa[i] + '</span>');
