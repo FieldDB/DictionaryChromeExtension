@@ -13,8 +13,8 @@
   letter-spacing: none;
   line-height: 1.2em;
 
-  background-color: white;
-  color: black ;
+  background-color: white !important;
+  color: black !important;
 
   margin: 0px;
   padding: 0px;
@@ -319,14 +319,4 @@
 
 #chrome_ggl_dict_ext .suggestion * {
   font-style: italic !important;
-}
-
-input.segmentedTextBox{ 
-	background-color: yellow !important; 
-} 
-.foundMorpheme{
-	color:#FF0000 !important;
-}
-.unknownMorpheme{
-	color:#00FF00 !important;
 }

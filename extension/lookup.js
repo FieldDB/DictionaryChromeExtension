@@ -104,47 +104,6 @@ function initialize() {
 }
 
 /***************************************************************
- *            Glossy Chrome Domain Logic                       *
- ***************************************************************/
-//Looks up Glosses
-
-
-function glossyChromGetGloss(segmentedText){
-  var morphemes = segmentedText.split("-");
-  console.log(morphemes);
-  var coloredSegmentedText = document.createElement("p");
-  var fSuffixes=["grafia","himoinen","neen","nenäinen","nne","peräinen","staa","typia","da","dä","e","filia","fobia","geeni","geneesi","grafi","htaa","htää","iitti","in","inen","io","is","isa","ismi","isti","isä","ittain","iö","ja","jä","kas","ke","kertainen","kka","kkain","kko cont.","kkä","kkäin","kkö","kratia","la","lainen","llinen","logi","logia","loginen","lti","lä","läinen","ma","mainen","mania","maton","mattomuus","metri","minen","mpi","mä","mäinen","mätön","na","ne","nomi","nomia","nta","nti","ntä","nä","o","oida","ologi","os","pä cont.","päin","ri","s","seeni","sfääri","ska","skooppi","skopia","sti","sto","stö","syytti","ta","tar","ton","ttaa","ttain","ttäin","ttää","tä","tär","tön","u","ua","us","uu","uus","va","vä","y","ys","yys","ö","öidä","ös"];
-  for(var i =0; i<morphemes.length;i++){ 
-    if (fSuffixes.indexOf(morphemes[i]) !== -1){
-      var span = document.createElement("span");
-
-     newlink = document.createElement('a'); 
-     //newlink.setAttribute('class', 'signature'); 
-     newlink.setAttribute('href', 'http://en.wiktionary.org/wiki/-'+morphemes[i]);
-
-
-      tn = document.createTextNode("-"+morphemes[i]);
-      newlink.appendChild(tn);
-      span.appendChild(newlink);
-
-
-      span.setAttribute('class', 'foundMorpheme');
-      coloredSegmentedText.appendChild(span);
-    }else{
-      var span = document.createElement("span");
-      if(i===0){
-        span.appendChild(document.createTextNode(morphemes[i]));
-      }else{       
-        span.appendChild(document.createTextNode("-"+morphemes[i]));
-      }
-      span.setAttribute('class', 'unknownMorpheme');
-      coloredSegmentedText.appendChild(span);
-    }
-  }
-  return coloredSegmentedText; 
-}
-
-/***************************************************************
  *                        Event Handlers                       *
  ***************************************************************/
 // Handle lookup-on-click.
@@ -157,7 +116,6 @@ function handleClick(e) {
   // If the modifier is held down and we have a selection, create a pop-up.
   if (checkModifier(options.clickModifier, e)) {
     var query = getTrimmedSelection();
-	console.log("query is "+query)
     if (query != '') {
       if (is_inside_frame) {
         if (last_query) breadcrumbs.push(last_query);
@@ -174,18 +132,6 @@ function handleClick(e) {
 
 // Handle keyboard shortcut.
 function handleKeypress(e) {
-  console.log(e.keyIdentifier)
-  if (e.keyIdentifier === "Enter"){
-    console.log("user pushed enter")
-    var segmentedText = document.getElementById("segmentedText").value;//.getAttribute("value");
-    var coloredSegments = glossyChromGetGloss(segmentedText);
-    console.log(coloredSegments);
-    document.getElementById("gloss").appendChild(coloredSegments); 
-    
- }else { 
-    console.log("user didn't push enter")
-  }
-	
   if (options.hideWithEscape && e.keyCode == 27) {
     removePopup(true, true);
     return;
@@ -297,14 +243,13 @@ function createQueryForm() {
 function createCenteredPopup(query) {
   var windowX = (window.innerWidth - (PADDING_LEFT + options.frameWidth + PADDING_RIGHT)) / 2;
   var windowY = (window.innerHeight - (PADDING_TOP + options.frameHeight + PADDING_BOTTOM)) / 2;
-	console.log("query is "+query)
+
   // Create new popup.
   createPopup(query, windowX, windowY, windowX, windowY, true);
 }
 
 // Create and fade in the dictionary popup frame and button.
 function createPopup(query, x, y, windowX, windowY, fixed) {
-console.log("query is "+query)
   // If an old frame still exists, wait until it is killed.
   var frame_ref = document.getElementById(ROOT_ID);
   if (frame_ref) {
@@ -486,11 +431,157 @@ function createHtmlFromLookup(query, dict_entry) {
   var buffer = [];
 
   buffer.push('<div id="' + ROOT_ID + '_content">');
-  buffer.push('<div style="display: table; padding-top: 3em; width: 100%;">');
-  buffer.push('<div style="display: table-cell; text-align: center; vertical-align: middle;">');
 
-  buffer.push('Add segmentation (eg. un-lock-able): <input class="segmentedTextBox" type="text" id="segmentedText" value="'+ query +'" /><div id="gloss">');
-    
+  if (!dict_entry.meanings || dict_entry.meanings.length == 0) {
+    buffer.push('<div style="display: table; padding-top: 3em; width: 100%;">');
+    buffer.push('<div style="display: table-cell; text-align: center; vertical-align: middle;">');
+
+    buffer.push('No definitions for <strong>' + query + '</strong>.');
+    if (dict_entry.suggestions) {
+      // Offer suggestions.
+      buffer.push('<br /><br />');
+      buffer.push('<em class="suggestion">');
+      buffer.push('Did you mean ');
+      for (var i = 0; i < dict_entry.suggestions.length; i++) {
+        var extern_link = EXTERN_LINK_TEMPLATE.replace('%query%', dict_entry.suggestions[i]);
+        buffer.push('<a href="' + extern_link + '">' + dict_entry.suggestions[i] + '</a>');
+        if (i == dict_entry.suggestions.length - 1) {
+          buffer.push('?');
+        } else if (i == dict_entry.suggestions.length - 2) {
+          buffer.push(' or ');
+        } else {
+          buffer.push(', ');
+        }
+      }
+      buffer.push('</em>');
+    }
+
+    // Suggest other sources.
+    buffer.push('<br /><br />');
+    buffer.push('Try the same query in ');
+    buffer.push('<a class="alternate_source" href="' + GOOGLE_DICT_LINK_TEMPLATE.replace('%query%', query) + '" target="_blank">');
+    buffer.push('Google Dictionary ');
+    buffer.push('<img src="' + EXTERNAL_ICON_URL + '" title="Lookup in Google Dictionary" />');
+    buffer.push('</a>');
+
+    buffer.push(' or ');
+    buffer.push('<a class="alternate_source" href="' + THE_FREE_DICT_LINK_TEMPLATE.replace('%query%', query) + '" target="_blank">');
+    buffer.push('The Free Dictionary ');
+    buffer.push('<img src="' + EXTERNAL_ICON_URL + '" title="Lookup in The Free Dictionary" />');
+    buffer.push('</a>');
+
+    buffer.push('.');
+
+    buffer.push('</div>');
+    buffer.push('</div>');
+  } else {
+    // Header with formatted query and pronunciation.
+    buffer.push('<div class="' + ROOT_ID + '_header">');
+    var extern_link = EXTERN_LINK_TEMPLATE.replace('%query%', (dict_entry.term || query));
+    buffer.push('<a class="' + ROOT_ID + '_title" href="' + extern_link + '" target="_blank">' + (dict_entry.term || query) + '</a>');
+
+    if (options.showIPA && dict_entry.ipa && dict_entry.ipa.length) {
+      for (var i in dict_entry.ipa) {
+        buffer.push('<span class="' + ROOT_ID + '_phonetic" title="Phonetic">' + dict_entry.ipa[i] + '</span>');
+      }
+    }
+
+    if (options.showAudio && dict_entry.audio && dict_entry.audio.length) {
+      for (var i in dict_entry.audio) {
+        var audio = dict_entry.audio[i];
+        buffer.push('<span class="' + ROOT_ID + '_audio" data-src="' + audio.file + '">');
+        buffer.push('<img class="' + ROOT_ID + '_speaker" src="' + SPEAKER_ICON_URL + '" title="Listen" />');
+        buffer.push(' (' + audio.type + ')');
+        if (options.showAudioLinks) {
+          buffer.push('<a href="' + AUDIO_LINK_TEMPLATE.replace('%file%', audio.file) + '" target="_blank">');
+          buffer.push('<img src="' + EXTERNAL_ICON_URL + '" title="Wikimedia Commons File Description" />');
+          buffer.push('</a>');
+        }
+        buffer.push('</span>');
+      }
+    }
+
+    buffer.push('</div>');
+
+    // Meanings.
+    buffer.push('<ol id="' + ROOT_ID + '_meanings">');
+    for (var i in dict_entry.meanings) {
+      var meaning = dict_entry.meanings[i];
+      buffer.push('<li>');
+      meaning.content = maybeStripLinks(meaning.content);
+      buffer.push(meaning.content);
+      if (options.showPOS) {
+        buffer.push('<span class="' + ROOT_ID + '_pos">' + meaning.type + '</span>');
+      }
+      if (options.showExamples && meaning.examples && meaning.examples.length) {
+        buffer.push('<ul class="' + ROOT_ID + '_examples">');
+        for (var j in meaning.examples) {
+          meaning.examples[j] = maybeStripLinks(meaning.examples[j]);
+          buffer.push('<li>' + meaning.examples[j] + '</li>');
+        }
+        buffer.push('</ul>');
+      }
+
+      buffer.push('</li>');
+    }
+    buffer.push('</ol>');
+
+    // Etymology
+    if (options.showEtymology && dict_entry.etymology) {
+      buffer.push('<hr class="' + ROOT_ID + '_separator" />');
+      buffer.push('<div class="' + ROOT_ID + '_subtitle">Etymology</div>');
+      dict_entry.etymology = maybeStripLinks(dict_entry.etymology);
+      buffer.push('<p>' + dict_entry.etymology + '</p>');
+    }
+
+    // Synonyms
+    if (options.showSynonyms && dict_entry.synonyms && dict_entry.synonyms.length) {
+      buffer.push('<hr class="' + ROOT_ID + '_separator" />');
+      buffer.push('<div class="' + ROOT_ID + '_subtitle">Synonyms</div>');
+
+      buffer.push('<p id="' + ROOT_ID + '_synonyms">');
+      for (var i in dict_entry.synonyms) {
+        var extern_link = EXTERN_LINK_TEMPLATE.replace('%query%', dict_entry.synonyms[i]);
+        buffer.push('<a href="' + extern_link + '">' + dict_entry.synonyms[i] + '</a>');
+        if (i < dict_entry.synonyms.length - 1) {
+          buffer.push(', ');
+        }
+      }
+      buffer.push('</p>');
+    }
+
+    // Antonyms
+    if (options.showAntonyms && dict_entry.antonyms && dict_entry.antonyms.length) {
+      buffer.push('<hr class="' + ROOT_ID + '_separator" />');
+      buffer.push('<div class="' + ROOT_ID + '_subtitle">Antonyms</div>');
+
+      buffer.push('<p id="' + ROOT_ID + '_antonyms">');
+      for (var i in dict_entry.antonyms) {
+        var extern_link = EXTERN_LINK_TEMPLATE.replace('%query%', dict_entry.antonyms[i]);
+        buffer.push('<a href="' + extern_link + '">' + dict_entry.antonyms[i] + '</a>');
+        if (i < dict_entry.antonyms.length - 1) {
+          buffer.push(', ');
+        }
+      }
+      buffer.push('</p>');
+    }
+
+    // Related
+    if (options.showRelated && dict_entry.related && dict_entry.related.length) {
+      buffer.push('<hr class="' + ROOT_ID + '_separator" />');
+      buffer.push('<div class="' + ROOT_ID + '_subtitle">See also</div>');
+
+      buffer.push('<p id="' + ROOT_ID + '_related">');
+      for (var i in dict_entry.related) {
+        var extern_link = EXTERN_LINK_TEMPLATE.replace('%query%', dict_entry.related[i]);
+        buffer.push('<a href="' + extern_link + '">' + dict_entry.related[i] + '</a>');
+        if (i < dict_entry.related.length - 1) {
+          buffer.push(', ');
+        }
+      }
+      buffer.push('</p>');
+    }
+  }
 
   buffer.push('<div id="' + ROOT_ID + '_spacer"></div>');
   buffer.push('</div>');
@@ -693,4 +784,3 @@ function isClickInsideFrame(e) {
 
 /******************************************************************************/
 initialize();
-
