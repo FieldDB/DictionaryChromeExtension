@@ -38,6 +38,11 @@
   width: auto;
 }
 
+#chrome_ggl_dict_ext iframe {
+  height: 15em;
+  width: 100%;
+}
+
 #chrome_ggl_dict_ext {
   background: white !important;
 

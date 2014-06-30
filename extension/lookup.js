@@ -344,6 +344,9 @@ var options = {
                 spans[i].attributes['data-src'].value);
             }
           }
+
+          // Show the actual entry
+          window.frames["WikiFrame"].location.replace(document.getElementById("WikiFrame").title);
         }, 100);
       }
     });
@@ -450,6 +453,7 @@ var options = {
     var buffer = [];
 
     buffer.push('<div id="' + ROOT_ID + '_content">');
+    buffer.push('<iframe class="WikiFrame" id="WikiFrame" title="'+dict_entry.html_url+'" name="WikiFrame" frameborder="0"><iframe>');
 
     if (!dict_entry.meanings || dict_entry.meanings.length == 0) {
       buffer.push('<div style="display: table; padding-top: 3em; width: 100%;">');
@@ -490,7 +494,6 @@ var options = {
       buffer.push('</a>');
 
       buffer.push('.');
-      buffer.push('<img src="://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Crocus_sativus1.jpg/400px-Crocus_sativus1.jpg"/>');
       buffer.push('</div>');
       buffer.push('</div>');
     } else {
@@ -508,7 +511,7 @@ var options = {
       if (dict_entry.images && dict_entry.images.length) {
         for (var i in dict_entry.images) {
           var image = dict_entry.images[i];
-          buffer.push('<span class="' + ROOT_ID + '_image" data-src="' + image.title+ '">');
+          buffer.push('<span class="' + ROOT_ID + '_image" data-src="' + image.title + '">');
           buffer.push('<img class="' + ROOT_ID + '_camera" src="' + IMAGE_ICON_URL + '" title="See Image" />');
           if (true) {
             buffer.push('<a href="' + IMAGE_LINK_TEMPLATE.replace('%protocol%', window.location.protocol).replace('%languagewikicode%', dict_entry.language.wikicode).replace('%file%', image.title) + '" target="_blank">');
@@ -532,7 +535,6 @@ var options = {
           buffer.push('</span>');
         }
       }
-      // buffer.push('<img src="://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Crocus_sativus1.jpg/400px-Crocus_sativus1.jpg"/>');
       buffer.push('</div>');
 
       // Meanings.
@@ -616,6 +618,7 @@ var options = {
     }
 
     buffer.push('<div id="' + ROOT_ID + '_spacer"></div>');
+
     buffer.push('</div>');
 
     buffer.push('<span id="' + ROOT_ID + '_shader_top" style="background: url(\'' + GRADIENT_DOWN_URL + '\') repeat-x !important"></span>');
