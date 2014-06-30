@@ -1,11 +1,14 @@
 // API URLs.
-var DICT_API_URL = 'http://%languagewikicode%.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=content&format=json&titles=%query%';
+var DICT_API_URL = '%protocol%//%languagewikicode%.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=content&format=json&titles=%query%';
+var DICT_IMAGE_API_URL = '%protocol%//%languagewikicode%.wikipedia.org/w/api.php?action=query&prop=images&format=json&titles=%query%';
+var DICT_CONTRIBUTORS_API_URL = '%protocol%//%languagewikicode%.wikipedia.org/w/api.php?action=query&prop=contributors&format=json&titles=%query%';
+var DICT_HTML_URL = '%protocol%//%languagewikicode%.wikipedia.org/w/index.php?titles=%query%&printable=yes';
 var AUDIO_API_URL = 'http://commons.wikimedia.org/w/index.php?title=File:%file%&action=edit&externaledit=true&mode=file';
 
 // Helpers to store and access objects in local storage.
-Storage.prototype.setObject = function(key, value) { 
+Storage.prototype.setObject = function(key, value) {
   this.setItem(key, JSON.stringify(value));
-}
+};
 Storage.prototype.getObject = function(key) {
   var value = this.getItem(key);
   if (value == null) {
@@ -43,6 +46,13 @@ function sendAjaxRequest(url, callback) {
   xhr.send();
 }
 
+var processWiktionaryEntry = function(wikimarkup){
+  return {
+    content: wikimarkup,
+    examples: [],
+    type: "N"
+  }
+};
 // Server procedure for content script.
 // Receives a request containing two parameters:
 //   method:
@@ -62,10 +72,76 @@ chrome.extension.onMessage.addListener(function(request, sender, callback) {
     callback('');
   } else if (request.method == 'lookup') {
     // Look up a term from the dictionary using the Ajax API.
-    var url = DICT_API_URL.replace('%query%', request.arg).replace('%languagewikicode%', request.language.wikicode);
+    var url = DICT_API_URL.replace('%query%', request.arg).replace('%languagewikicode%', request.language.wikicode).replace('%protocol%', request.protocol);
 
     sendAjaxRequest(url, function(resp) {
-      callback(JSON.parse(resp || '{}'));
+      if (resp) {
+        console.log(resp);
+        resp = JSON.parse(resp);
+      }
+      resp = {
+        "query": {
+          "pages": {
+            "41216": {
+              "pageid": 41216,
+              "ns": 0,
+              "title": "ზაფრანა",
+              "revisions": [{
+                "contentformat": "text/x-wiki",
+                "contentmodel": "wikitext",
+                "*": "{{ტაქსოდაფა *\n| სახელი = ზაფრანა\n| სურათის ფაილი =  CrocusLongiflorus.jpg\n| სურათის წარწერა = Crocus longiflorus \n| სურათის აღწერა =  Crocus longiflorus\n| სამეფო = მცენარეები\n| კლასი =  \n| რიგი = \n| ქვერიგი = \n| ოჯახი =  [[ზამბახისებრნი]]\n| გვარი =  [[ზაფრანა]]\n| ლათ =  Crocus\n| სექციის სახელი =\n| სექციის ტექსტი =\n| არეალის რუკა =\n| არეალის რუკის წარწერა =\n| არეალის რუკის სიგანე =\n| არეალის ლეგენდა =\n| ვიკისახეობები =\n| itis =\n| ncbi =\n}}\n'''ზაფრანა''', ''კროკო'' (Crocus) — მრავალწლოვან ბალახოვან მცენარეთა გვარი [[ზამბახისებრნი|ზამბახისებრთა]] ოჯახისა. გორგლ-ბოლქვიანი მცენარეა. მიწისზედა ღერო არა აქვს და ყვავილი პირდაპირ გორგლისებრი ბოლქვიდან ამოდის. 80-მდე სახეობა გავრცელებულია ევროპასა და სამხრეთ-დასავლეთ აზიაში. [[საქართველო]]ში — 5 სახეობაა. ისინი ძირითადად ალპური მდელოს კომპონენტებია. მხოლოდ 2 სახეობა  [[Crocus adamii]] და შემოდგომაზე მოყვავილე   Crocus speciosus გვხვდება შუა სარტყელში. Crocus autranii ვიწრო ენდემური სახეობაა და მარტო აფხაზეთში იზრდება. [[Crocus scharojani]] კი   — კავკასიის [[ენდემები|ენდემია]]. ზაფრანის ყველა სახეობა ლამაზყვავილიანი, ამიტომ აშენებენ დეკორატიულ მებაღეობაში. [[Crocus sativus]]  მხოლოდ კულტურაშია ცნობილი და იყენებენ სუნელ-სანელებლად; მისი წითელი დინგები შეიცავს ძვირფას საღებავს — კროცინს.\n\n==ლიტერატურა==  \n{{ქსე|4|488|ხინთიბიძე ლ.}}\n\n[[კატეგორია:ზამბახისებრნი]]"
+              }]
+            }
+          }
+        }
+      }
+      var dictionary_entry = {};
+      if (resp && resp.query && resp.query.pages) {
+        for (var page in resp.query.pages) {
+          if (resp.query.pages[page].revisions) {
+            dictionary_entry.meanings = [processWiktionaryEntry(resp.query.pages[page].revisions[0]['*'])];
+            
+            var image_url = DICT_IMAGE_API_URL.replace('%query%', request.arg).replace('%languagewikicode%', request.language.wikicode).replace('%protocol%', request.protocol);
+            sendAjaxRequest(image_url, function(resp) {
+              if (resp) {
+                resp = JSON.parse(resp);
+              }
+              if (resp && resp.query && resp.query.pages[page]) {
+                dictionary_entry.images = resp.query.pages[page].images;
+              } else {
+                dictionary_entry.images = [];
+              }
+              
+              var contributors_url = DICT_CONTRIBUTORS_API_URL.replace('%query%', request.arg).replace('%languagewikicode%', request.language.wikicode).replace('%protocol%', request.protocol);
+              sendAjaxRequest(contributors_url, function(resp) {
+                if (resp) {
+                  resp = JSON.parse(resp);
+                }
+                if (resp && resp.query && resp.query.pages[page]) {
+                  dictionary_entry.contributors = resp.query.pages[page].contributors;
+                } else {
+                  dictionary_entry.contributors = [{
+                    name: 'anonymous',
+                    userid: '1'
+                  }];
+                }
+                callback(dictionary_entry);
+                // var html_url = DICT_HTML_URL.replace('%query%', request.arg).replace('%languagewikicode%', request.language.wikicode).replace('%protocol%', request.protocol);
+                // sendAjaxRequest(html_url, function(resp) {
+                //   console.log(resp);
+                //   dictionary_entry.html = resp.replace('<!DOCTYPE html>', '');
+                // });
+              });
+
+            });
+          } else {
+            callback(dictionary_entry);
+          }
+        }
+      } else {
+        callback(dictionary_entry);
+      }
+
     });
 
     return true; // Inform Chrome that we will make a delayed callback

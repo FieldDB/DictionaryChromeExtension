@@ -272,6 +272,7 @@ function createPopup(query, x, y, windowX, windowY, fixed) {
   chrome.runtime.sendMessage({
       method: 'lookup',
       arg: query,
+      protocol: window.location.protocol,
       language: {
         wikicode: "ka"
       }
@@ -477,7 +478,7 @@ function createHtmlFromLookup(query, dict_entry) {
     buffer.push('</a>');
 
     buffer.push('.');
-
+    // buffer.push('<iframe  width="100", height="100">'+dict_entry.html+'<iframe>');
     buffer.push('</div>');
     buffer.push('</div>');
   } else {
@@ -506,7 +507,7 @@ function createHtmlFromLookup(query, dict_entry) {
         buffer.push('</span>');
       }
     }
-
+    // buffer.push('<iframe  width="100", height="100">'+dict_entry.html+'<iframe>');
     buffer.push('</div>');
 
     // Meanings.
