@@ -46,7 +46,7 @@ function sendAjaxRequest(url, callback) {
   xhr.send();
 }
 
-var processWiktionaryEntry = function(wikimarkup){
+var processWiktionaryEntry = function(wikimarkup) {
   return {
     content: wikimarkup,
     examples: [],
@@ -96,11 +96,12 @@ chrome.extension.onMessage.addListener(function(request, sender, callback) {
         }
       }
       var dictionary_entry = {};
+      dictionary_entry.language = request.language;
       if (resp && resp.query && resp.query.pages) {
         for (var page in resp.query.pages) {
           if (resp.query.pages[page].revisions) {
             dictionary_entry.meanings = [processWiktionaryEntry(resp.query.pages[page].revisions[0]['*'])];
-            
+
             var image_url = DICT_IMAGE_API_URL.replace('%query%', request.arg).replace('%languagewikicode%', request.language.wikicode).replace('%protocol%', request.protocol);
             sendAjaxRequest(image_url, function(resp) {
               if (resp) {
@@ -111,7 +112,7 @@ chrome.extension.onMessage.addListener(function(request, sender, callback) {
               } else {
                 dictionary_entry.images = [];
               }
-              
+
               var contributors_url = DICT_CONTRIBUTORS_API_URL.replace('%query%', request.arg).replace('%languagewikicode%', request.language.wikicode).replace('%protocol%', request.protocol);
               sendAjaxRequest(contributors_url, function(resp) {
                 if (resp) {
