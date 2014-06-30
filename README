@@ -1,6 +1,6 @@
-# Dictionary Lookup for Chrome
+# My Dictionary for Chrome
 
-Dictionary Lookup is a Chrome extension that allows you to quickly look up
+My Dictionary is a Chrome extension that allows you to quickly look up
 definitions of words and phrases in a clean inline box. The definitions come
 from Wiktionary, but have been preprocessed to reduce formatting and provide
 faster lookup. Hold Alt and double-click or select any word to look it up - an
@@ -16,7 +16,7 @@ The application is powered by three separate parts:
 * The lightweight lookup server script that receives word or phrase queries and
   returns matches from a local database. It also does some trivial spelling
   suggestions based on a a Soundex index. Written in PHP. The canonical server
-  is hosted on <http://dictionary-lookup.org/>.
+  is hosted on <http://wiktionary.org>.
 * The scripts which parse a Wiktionary dump and produce a database of machine
   readable definitions appropriate for quick lookup. Written mainly in Python.
 

@@ -1,9 +1,9 @@
 // API URLs.
-var DICT_API_URL = 'http://dictionary-lookup.org/%query%';
+var DICT_API_URL = 'http://%languagewikicode%.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=content&format=json&titles=%query%';
 var AUDIO_API_URL = 'http://commons.wikimedia.org/w/index.php?title=File:%file%&action=edit&externaledit=true&mode=file';
 
 // Helpers to store and access objects in local storage.
-Storage.prototype.setObject = function(key, value) {
+Storage.prototype.setObject = function(key, value) { 
   this.setItem(key, JSON.stringify(value));
 }
 Storage.prototype.getObject = function(key) {
@@ -62,12 +62,12 @@ chrome.extension.onMessage.addListener(function(request, sender, callback) {
     callback('');
   } else if (request.method == 'lookup') {
     // Look up a term from the dictionary using the Ajax API.
-    var url = DICT_API_URL.replace('%query%', request.arg);
+    var url = DICT_API_URL.replace('%query%', request.arg).replace('%languagewikicode%', request.language.wikicode);
 
     sendAjaxRequest(url, function(resp) {
       callback(JSON.parse(resp || '{}'));
     });
-    
+
     return true; // Inform Chrome that we will make a delayed callback
   } else if (request.method == 'get_audio') {
     // Look up the URL of a given Wikimedia audio file.
@@ -109,5 +109,7 @@ if (saved_version) {
 }
 if (saved_version != current_version) {
   localStorage.setObject('version', current_version);
-  chrome.tabs.create({url: 'options.htm'});
+  chrome.tabs.create({
+    url: 'options.html'
+  });
 }

@@ -269,8 +269,14 @@ function createPopup(query, x, y, windowX, windowY, fixed) {
   makeMoveable(frame, PADDING_TOP);
 
   // Start loading frame data.
-  chrome.runtime.sendMessage({method: 'lookup', arg: query}, function(response) {
-    if (response != null) {
+  chrome.runtime.sendMessage({
+      method: 'lookup',
+      arg: query,
+      language: {
+        wikicode: "ka"
+      }
+    }, function(response) {
+      if (response != null) {
       var wrapper = document.createElement('div');
       wrapper.innerHTML = createHtmlFromLookup(query, response);
       for (var i = 0; i < wrapper.childNodes.length; i++) {

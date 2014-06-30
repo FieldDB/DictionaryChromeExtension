@@ -1,10 +1,10 @@
 {
-  "name": "Dictionary Lookup",
+  "name": "My Dictionary",
   "version": "4.3.2",
   "manifest_version": 2,
   "description": "Look up any word in an inline frame with a simple click and without leaving the page.",
   "icons": { "128": "img/icon.png" },
-  "options_page": "options.htm",
+  "options_page": "options.html",
   "background": { "scripts": ["background.js"] },
   "content_scripts": [{
     "matches": [ "http://*/*", "https://*/*" ],
@@ -15,8 +15,10 @@
   }],
   "permissions": [
     "tabs",
-    "http://dictionary-lookup.org/",
-    "http://commons.wikimedia.org/"
+    "http://*.wiktionary.org/",
+    "http://*.wikimedia.org/",
+    "http://*.wikipedia.org/",
+    "http://www.ethnologue.com/"
   ],
   "web_accessible_resources": [
     "img/back.png",
