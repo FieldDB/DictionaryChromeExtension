@@ -1,8 +1,8 @@
 {
   "name": "My Dictionary",
-  "version": "4.3.2",
+  "version": "2.12.0",
   "manifest_version": 2,
-  "description": "Look up any word in an inline frame with a simple click and without leaving the page.",
+  "description": "Look up any Wiktionary word in Cherokee, Inuktitut, Kartuli, Cree an inline frame with a simple click and without leaving the page.",
   "icons": { "128": "img/icon.png" },
   "options_page": "options.html",
   "background": { "scripts": ["background.js"] },
