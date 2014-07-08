@@ -1,9 +1,9 @@
 // API URLs.
-var DICT_API_URL = '%protocol%//%languagewikicode%.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=content&format=json&titles=%query%';
-var DICT_IMAGE_API_URL = '%protocol%//%languagewikicode%.wikipedia.org/w/api.php?action=query&prop=images&format=json&titles=%query%';
-var DICT_CONTRIBUTORS_API_URL = '%protocol%//%languagewikicode%.wikipedia.org/w/api.php?action=query&prop=contributors&format=json&titles=%query%';
-// var DICT_HTML_URL = '%protocol%//%languagewikicode%.wikipedia.org/w/index.php?titles=%query%&printable=yes';
-var DICT_HTML_URL = '%protocol%//%languagewikicode%.wikipedia.org/w/index.php?title=%query%&printable=yes';
+var DICT_API_URL = '%protocol%//%languagewikicode%.wiktionary.org/w/api.php?action=query&prop=revisions&rvprop=content&format=json&titles=%query%';
+var DICT_IMAGE_API_URL = '%protocol%//%languagewikicode%.wiktionary.org/w/api.php?action=query&prop=images&format=json&titles=%query%';
+var DICT_CONTRIBUTORS_API_URL = '%protocol%//%languagewikicode%.wiktionary.org/w/api.php?action=query&prop=contributors&format=json&titles=%query%';
+// var DICT_HTML_URL = '%protocol%//%languagewikicode%.wiktionary.org/w/index.php?titles=%query%&printable=yes';
+var DICT_HTML_URL = '%protocol%//%languagewikicode%.wiktionary.org/w/index.php?title=%query%&printable=yes';
 var AUDIO_API_URL = 'http://commons.wikimedia.org/w/index.php?title=File:%file%&action=edit&externaledit=true&mode=file';
 
 // Helpers to store and access objects in local storage.
@@ -76,7 +76,7 @@ chrome.extension.onMessage.addListener(function(request, sender, callback) {
     var url = DICT_API_URL.replace('%protocol%', request.protocol);
     if (request.language.incubation) {
       console.warn('This language is in incubation, supporting the dictionary this way is experimental. We don\'t know if all the API is there');
-      url = url.replace('%languagewikicode%.wikipedia.org', 'incubator.wikimedia.org').replace('%query%', 'Wt/' + request.language.wikicode + '/' + request.arg);
+      url = url.replace('%languagewikicode%.wiktionary.org', 'incubator.wikimedia.org').replace('%query%', 'Wt/' + request.language.wikicode + '/' + request.arg);
     }
     url = url.replace('%languagewikicode%', request.language.wikicode).replace('%query%', request.arg);
     sendAjaxRequest(url, function(resp) {
