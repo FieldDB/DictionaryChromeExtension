@@ -23,7 +23,7 @@ function setSelection(select_name, choice) {
   }
 }
 
-selects    = ['clickModifier', 'shortcutModifier', 'shortcutKey'];
+selects    = ['clickModifier', 'language', 'shortcutModifier', 'shortcutKey'];
 checkboxes = ['shortcutEnable', 'shortcutSelection', 'hideWithEscape',
               'saveFrameSize', 'showExamples', 'showPOS', 'showLabels',
               'showIPA', 'showAudio', 'showAudioLinks', 'showRelated',
@@ -33,6 +33,7 @@ textboxes  = ['frameWidth', 'frameHeight', 'queryFormWidth'];
 // Restores state from localStorage.
 function restoreOptions() {
   // Set defaults.
+  setSelection('language', 'kat');
   setSelection('clickModifier', 'Alt');
   setSelection('shortcutModifier', 'Ctrl');
   setSelection('shortcutKey', 'Q');

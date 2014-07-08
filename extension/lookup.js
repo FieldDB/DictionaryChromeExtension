@@ -23,7 +23,7 @@ var GRADIENT_DOWN_URL = chrome.runtime.getURL('img/gradient_down.png');
 var GRADIENT_UP_URL = chrome.runtime.getURL('img/gradient_up.png');
 // Regexes.
 var DICT_LINK_REGEX = /^http:\/\/en\.wiktionary\.org\/wiki\/([^:]*)$/;
-var TITLE_CLASS_REGEX = RegExp('(^|\s)' + ROOT_ID + '_title(\s|$)')
+var TITLE_CLASS_REGEX = RegExp('(^|\s)' + ROOT_ID + '_title(\s|$)');
 
 // Internal global vars.
 var body = document.getElementsByTagName('body')[0];
@@ -34,6 +34,7 @@ var audio_cache = {};
 // Extension options with defaults.
 var options = {
   clickModifier: 'Ctrl',
+  language: 'kat',
   shortcutModifier: 'Ctrl',
   shortcutKey: 'Q',
   shortcutEnable: true,
@@ -55,7 +56,7 @@ var options = {
   showAntonyms: false,
   showLinks: false,
   showEtymology: false
-}
+};
 
 /***************************************************************
  *                          Entry Point                        *
@@ -68,7 +69,7 @@ var options = {
         method: 'retrieve',
         arg: opt
       }, function(response) {
-        if (response != null) options[opt] = response;
+        if (response !== null) options[opt] = response;
       });
     }
 
@@ -121,7 +122,7 @@ var options = {
     // If the modifier is held down and we have a selection, create a pop-up.
     if (checkModifier(options.clickModifier, e)) {
       var query = getTrimmedSelection();
-      if (query != '') {
+      if (query !== '') {
         if (is_inside_frame) {
           if (last_query) breadcrumbs.push(last_query);
           navigateFrame(query);
@@ -144,9 +145,9 @@ var options = {
 
     if (!options.shortcutEnable) return;
     if (!checkModifier(options.shortcutModifier, e)) return;
-    if (options.shortcutKey.charCodeAt(0) != e.keyCode) return;
+    if (options.shortcutKey.charCodeAt(0) !== e.keyCode) return;
 
-    if (options.shortcutSelection && getTrimmedSelection() != '') {
+    if (options.shortcutSelection && getTrimmedSelection() !== '') {
       // Lookup selection.
       removePopup(true, true);
       breadcrumbs = [];
@@ -206,7 +207,7 @@ var options = {
     function initLookup() {
       grayOut(false);
       removePopup(false, true);
-      if (textbox.value.replace(/^\s+|\s+$/g, '') != '') {
+      if (textbox.value.replace(/^\s+|\s+$/g, '') !== '') {
         breadcrumbs = [];
         createCenteredPopup(textbox.value);
       }
@@ -253,6 +254,41 @@ var options = {
     createPopup(query, windowX, windowY, windowX, windowY, true);
   }
 
+  function mapEthnologueCodeToLanguageWithWikiMediaCode(ethnologeCode) {
+    if (ethnologeCode === 'chr') {
+      return {
+        wikicode: 'chr',
+        ethnologecode: ethnologeCode,
+        name: 'Cherokee'
+      };
+    } else if (ethnologeCode === 'ike') {
+      return {
+        wikicode: 'iu',
+        ethnologecode: ethnologeCode,
+        name: 'Inuktitut'
+      };
+    } else if (ethnologeCode === 'kat') {
+      return {
+        wikicode: 'ka',
+        ethnologecode: ethnologeCode,
+        name: 'Kartuli/Qartuli/ქართული'
+      };
+    } else if (ethnologeCode === 'crk') {
+      return {
+        wikicode: 'cr',
+        incubation: true,
+        ethnologecode: ethnologeCode,
+        name: 'Plains Cree'
+      };
+    } else {
+      return {
+        wikicode: 'ka',
+        ethnologecode: 'kat',
+        name: 'Kartuli/Qartuli/ქართული'
+      };
+    }
+  }
+
   // Create and fade in the dictionary popup frame and button.
   function createPopup(query, x, y, windowX, windowY, fixed) {
     // If an old frame still exists, wait until it is killed.
@@ -280,11 +316,9 @@ var options = {
       method: 'lookup',
       arg: query,
       protocol: window.location.protocol,
-      language: {
-        wikicode: "ka"
-      }
+      language: mapEthnologueCodeToLanguageWithWikiMediaCode(options.language)
     }, function(response) {
-      if (response != null) {
+      if (response !== null) {
         var wrapper = document.createElement('div');
         wrapper.innerHTML = createHtmlFromLookup(query, response);
         for (var i = 0; i < wrapper.childNodes.length; i++) {
@@ -453,9 +487,9 @@ var options = {
     var buffer = [];
 
     buffer.push('<div id="' + ROOT_ID + '_content">');
-    buffer.push('<iframe class="WikiFrame" id="WikiFrame" title="'+dict_entry.html_url+'" name="WikiFrame" frameborder="0"><iframe>');
+    buffer.push('<iframe class="WikiFrame" id="WikiFrame" title="' + dict_entry.html_url + '" name="WikiFrame" frameborder="0"><iframe>');
 
-    if (!dict_entry.meanings || dict_entry.meanings.length == 0) {
+    if (!dict_entry.meanings || dict_entry.meanings.length === 0) {
       buffer.push('<div style="display: table; padding-top: 3em; width: 100%;">');
       buffer.push('<div style="display: table-cell; text-align: center; vertical-align: middle;">');
 
@@ -636,7 +670,7 @@ var options = {
     // Pass true to gray out screen, false to ungray.
     var dark_id = ROOT_ID + '_shader';
     var dark = document.getElementById(dark_id);
-    var first_time = (dark == null);
+    var first_time = (dark === null);
 
     if (first_time) {
       // First time - create shading layer.
@@ -663,7 +697,7 @@ var options = {
       setTimeout(function() {
         dark.style.opacity = 0.7;
       }, 100);
-    } else if (dark.style.opacity != 0) {
+    } else if (dark.style.opacity !== 0) {
       setTimeout(function() {
         dark.style.opacity = 0;
       }, 100);
@@ -723,7 +757,7 @@ var options = {
         y: (e.clientY - last_position.y)
       };
 
-      var zoom_ratio = parseFloat(document.defaultView.getComputedStyle(ruler, null).getPropertyValue('width')) / 100;;
+      var zoom_ratio = parseFloat(document.defaultView.getComputedStyle(ruler, null).getPropertyValue('width')) / 100;
       var height = parseFloat(document.defaultView.getComputedStyle(container, null).getPropertyValue('height'));
       var width = parseFloat(document.defaultView.getComputedStyle(container, null).getPropertyValue('width'));
       var new_height = (height + moved.y) / zoom_ratio;

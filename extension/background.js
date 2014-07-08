@@ -73,8 +73,12 @@ chrome.extension.onMessage.addListener(function(request, sender, callback) {
     callback('');
   } else if (request.method == 'lookup') {
     // Look up a term from the dictionary using the Ajax API.
-    var url = DICT_API_URL.replace('%query%', request.arg).replace('%languagewikicode%', request.language.wikicode).replace('%protocol%', request.protocol);
-
+    var url = DICT_API_URL.replace('%protocol%', request.protocol);
+    if (request.language.incubation) {
+      console.warn('This language is in incubation, supporting the dictionary this way is experimental. We don\'t know if all the API is there');
+      url = url.replace('%languagewikicode%.wikipedia.org', 'incubator.wikimedia.org').replace('%query%', 'Wt/' + request.language.wikicode + '/' + request.arg);
+    }
+    url = url.replace('%languagewikicode%', request.language.wikicode).replace('%query%', request.arg);
     sendAjaxRequest(url, function(resp) {
       if (resp) {
         console.log(resp);
@@ -103,7 +107,12 @@ chrome.extension.onMessage.addListener(function(request, sender, callback) {
           if (resp.query.pages[page].revisions) {
             dictionary_entry.meanings = [processWiktionaryEntry(resp.query.pages[page].revisions[0]['*'])];
 
-            var image_url = DICT_IMAGE_API_URL.replace('%query%', request.arg).replace('%languagewikicode%', request.language.wikicode).replace('%protocol%', request.protocol);
+            var image_url = DICT_IMAGE_API_URL.replace('%protocol%', request.protocol);
+            if (request.language.incubation) {
+              console.warn('This language is in incubation, supporting the dictionary this way is experimental. We don\'t know if all the API is there');
+              image_url = image_url.replace('%languagewikicode%.wikipedia.org', 'incubator.wikimedia.org').replace('%query%', 'Wt/' + request.language.wikicode + '/' + request.arg);
+            }
+            image_url = image_url.replace('%languagewikicode%', request.language.wikicode).replace('%query%', request.arg);
             sendAjaxRequest(image_url, function(resp) {
               if (resp) {
                 resp = JSON.parse(resp);
@@ -114,7 +123,12 @@ chrome.extension.onMessage.addListener(function(request, sender, callback) {
                 dictionary_entry.images = [];
               }
 
-              var contributors_url = DICT_CONTRIBUTORS_API_URL.replace('%query%', request.arg).replace('%languagewikicode%', request.language.wikicode).replace('%protocol%', request.protocol);
+              var contributors_url = DICT_CONTRIBUTORS_API_URL.replace('%protocol%', request.protocol);
+              if (request.language.incubation) {
+                console.warn('This language is in incubation, supporting the dictionary this way is experimental. We don\'t know if all the API is there');
+                contributors_url = contributors_url.replace('%languagewikicode%.wikipedia.org', 'incubator.wikimedia.org').replace('%query%', 'Wt/' + request.language.wikicode + '/' + request.arg);
+              }
+              contributors_url = contributors_url.replace('%languagewikicode%', request.language.wikicode).replace('%query%', request.arg);
               sendAjaxRequest(contributors_url, function(resp) {
                 if (resp) {
                   resp = JSON.parse(resp);
@@ -127,7 +141,12 @@ chrome.extension.onMessage.addListener(function(request, sender, callback) {
                     userid: '1'
                   }];
                 }
-                var html_url = DICT_HTML_URL.replace('%query%', request.arg).replace('%languagewikicode%', request.language.wikicode).replace('%protocol%', request.protocol);
+                var html_url = DICT_HTML_URL.replace('%protocol%', request.protocol);
+                if (request.language.incubation) {
+                  console.warn('This language is in incubation, supporting the dictionary this way is experimental. We don\'t know if all the API is there');
+                  html_url = html_url.replace('%languagewikicode%.wikipedia.org', 'incubator.wikimedia.org').replace('%query%', 'Wt/' + request.language.wikicode + '/' + request.arg);
+                }
+                html_url = html_url.replace('%languagewikicode%', request.language.wikicode).replace('%query%', request.arg);
                 dictionary_entry.html_url = html_url;
                 callback(dictionary_entry);
                 // sendAjaxRequest(html_url, function(resp) {
