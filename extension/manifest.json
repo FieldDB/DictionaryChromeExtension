@@ -1,6 +1,6 @@
 {
   "name": "My Dictionary",
-  "version": "2.12.0",
+  "version": "2.44.22",
   "manifest_version": 2,
   "description": "Look up any Wiktionary word in Cherokee, Inuktitut, Kartuli, Cree an inline frame with a simple click and without leaving the page.",
   "icons": { "128": "img/icon.png" },
@@ -20,6 +20,7 @@
     "http://*.wikipedia.org/",
     "http://www.ethnologue.com/"
   ],
+  "content_security_policy": "script-src 'self' https://www.google-analytics.com; object-src 'self'",
   "web_accessible_resources": [
     "img/back.png",
     "img/gradient_down.png",

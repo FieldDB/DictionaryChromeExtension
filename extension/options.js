@@ -1,3 +1,27 @@
+(function(i, s, o, g, r, a, m) {
+  i['GoogleAnalyticsObject'] = r;
+  i[r] = i[r] || function() {
+    (i[r].q = i[r].q || []).push(arguments)
+  }, i[r].l = 1 * new Date();
+  a = s.createElement(o),
+    m = s.getElementsByTagName(o)[0];
+  a.async = 1;
+  a.src = g;
+  m.parentNode.insertBefore(a, m)
+})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+// ga('create', 'UA-35422317-1', 'auto'
+// );
+
+// https://productforums.google.com/forum/#!topic/analytics/KNz8TimivXo
+ga('create', 'UA-35422317-1', {
+  'cookieDomain': 'none'
+});
+ga('set', 'checkProtocolTask', function() { /* nothing */ });
+ga('set', 'page', 'dictionary-chrome-extension' + window.location.href.replace(window.location.protocol, "").replace(/^\//,""));
+ga('send', 'pageview');
+
+
 // Helpers to store and access objects in local storage.
 Storage.prototype.setObject = function(key, value) {
   this.setItem(key, JSON.stringify(value));
